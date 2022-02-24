@@ -1,6 +1,7 @@
 package com.zerobank.utilities;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -9,6 +10,9 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.safari.SafariDriver;
 
 public class Driver {
@@ -27,19 +31,28 @@ public class Driver {
             switch (browser) {
                 case "chrome":
                     WebDriverManager.chromedriver().setup();
-                    driver = new ChromeDriver();
+                    driver = new ChromeDriver(new ChromeOptions().setAcceptInsecureCerts(true));
                     break;
                 case "chrome-headless":
                     WebDriverManager.chromedriver().setup();
-                    driver = new ChromeDriver(new ChromeOptions().setHeadless(true));
+                    driver = new ChromeDriver(new ChromeOptions().setAcceptInsecureCerts(true).setHeadless(true));
+                    JavascriptExecutor js = (JavascriptExecutor)driver;
+                    js.executeScript("CertificateWarningController.visitInsecureWebsiteWithTemporaryBypass()");
+                    break;
+                case "chrome-old":
+                    ChromeOptions options = new ChromeOptions();
+                    options.setAcceptInsecureCerts(true);
+                    options.setBinary("C:\\Users\\Madalina\\Downloads\\chrome-win\\chrome.exe");
+                    WebDriverManager.chromedriver().driverVersion("73.0.3683.68").setup();
+                    driver = new ChromeDriver(options);
                     break;
                 case "firefox":
                     WebDriverManager.firefoxdriver().setup();
-                    driver = new FirefoxDriver();
+                    driver = new FirefoxDriver(new FirefoxOptions().setAcceptInsecureCerts(true));
                     break;
                 case "firefox-headless":
                     WebDriverManager.firefoxdriver().setup();
-                    driver = new FirefoxDriver(new FirefoxOptions().setHeadless(true));
+                    driver = new FirefoxDriver(new FirefoxOptions().setAcceptInsecureCerts(true).setHeadless(true));
                     break;
                 case "ie":
                     if (!System.getProperty("os.name").toLowerCase().contains("windows"))

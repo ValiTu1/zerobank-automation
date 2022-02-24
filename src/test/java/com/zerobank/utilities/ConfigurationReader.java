@@ -1,7 +1,6 @@
 package com.zerobank.utilities;
 
 import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.util.Properties;
 
 public class ConfigurationReader {
